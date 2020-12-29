@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^12.5.1",
+    "discord.js-commando": "github:discordjs/Commando",
     "eslint": "^7.16.0"
   }
 }
