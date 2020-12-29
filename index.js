@@ -24,10 +24,14 @@ client.on("message", (message) => {
   const args = message.content.slice(prefix.length).trim().split(/ +/);
   const commandName = args.shift().toLowerCase();
 
-  // Returns if the command doesn't exist
-  if (!client.commands.has(commandName)) return;
+  // Returns if the command name cannot be matched with any commands or their aliases
+  const command =
+    client.commands.get(commandName) ||
+    client.commands.find(
+      (cmd) => cmd.aliases && cmd.aliases.includes(commandName),
+    );
 
-  const command = client.commands.get(commandName);
+  if (!command) return;
 
   if (command.guildOnly && message.channel.type === "dm") {
     return message.reply("I can't execute that command inside DMs!");

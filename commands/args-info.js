@@ -1,9 +1,10 @@
 module.exports = {
   name: "args-info",
+  aliases: ["alias1", "alias2"],
   description: "Information about the arguments provided.",
   args: true,
   usage: "<arg1> <arg2>",
-  guildOnly: false,
+  guildOnly: true,
   execute(message, args) {
     if (args[0] === "foo") {
       return message.channel.send("bar");
