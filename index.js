@@ -1,91 +1,33 @@
-const fs = require("fs");
-const Discord = require("discord.js");
-const { prefix, token } = require("./config.json");
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
-const cooldowns = new Discord.Collection();
+const { ownerID, token } = require("./config.json");
+const { CommandoClient } = require("discord.js-commando");
+const path = require("path");
+const { Collection } = require("discord.js");
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+const client = new CommandoClient({
+  commandPrefix: "h!",
+  owner: ownerID,
+});
+// TODO: Maybe subject to change based on Firebase file structure
+client.hackathons = new Collection();
 
-// Dynamically loads the commands
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.name, command);
-}
+client.registry
+  .registerDefaultTypes()
+  .registerTypes([require("./types/date.js")])
+  .registerGroups([
+    ["first", "Your First Command Group"],
+    ["hackathon", "Hackathon Command Group"],
+  ])
+  .registerDefaultGroups({
+    eval: false,
+  })
+  .registerDefaultCommands()
+  .registerCommandsIn(path.join(__dirname, "commands"));
 
 client.once("ready", () => {
-  console.log("Ready!");
+  console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
+  client.user.setActivity("with Commando");
 });
 
-client.on("message", (message) => {
-  if (!message.content.startsWith(prefix) || message.author.bot) return;
-
-  const args = message.content.slice(prefix.length).trim().split(/ +/);
-  const commandName = args.shift().toLowerCase();
-
-  // Returns if the command name cannot be matched with any commands or their aliases
-  const command =
-    client.commands.get(commandName) ||
-    client.commands.find(
-      (cmd) => cmd.aliases && cmd.aliases.includes(commandName),
-    );
-
-  if (!command) return;
-
-  if (command.guildOnly && message.channel.type === "dm") {
-    return message.reply("I can't execute that command inside DMs!");
-  }
-
-  // Checks if the command requires arguments, and the args supplied isn't empty. Provides feedback if true
-  if (command.args && !args.length) {
-    let reply = `You didn't provide any arguments, ${message.author}!`;
-
-    if (command.usage) {
-      reply += `\nThe proper usage would be: \`${prefix}${command.name} ${command.usage}\``;
-    }
-
-    return message.channel.send(reply);
-  }
-
-  if (command.permissions) {
-    console.log(message.member.permissions);
-    if (!message.member.hasPermission(command.permissions)) {
-      return message.reply("You do not have sufficient permission to do this.");
-    }
-  }
-
-  if (!cooldowns.has(command.name)) {
-    cooldowns.set(command.name, new Discord.Collection());
-  }
-
-  const now = Date.now();
-  const timestamps = cooldowns.get(command.name);
-  const cooldownAmount = (command.cooldown || 3) * 1000;
-
-  if (timestamps.has(message.author.id)) {
-    const expirationTime = timestamps.get(message.author.id) + cooldownAmount;
-
-    if (now < expirationTime) {
-      const timeLeft = (expirationTime - now) / 1000;
-      return message.reply(
-        `please wait ${timeLeft.toFixed(
-          1,
-        )} more second(s) before reusing the \`${command.name}\` command.`,
-      );
-    }
-  }
-
-  timestamps.set(message.author.id, now);
-  setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
-
-  try {
-    command.execute(message, args);
-  } catch (error) {
-    console.error(error);
-    message.reply("there was an error trying to execute that command!");
-  }
-});
+client.on("error", console.error);
 
 client.login(token);
