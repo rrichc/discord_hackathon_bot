@@ -1,16 +1,25 @@
 const { ownerID, token } = require("./config.json");
 const { CommandoClient } = require("discord.js-commando");
 const path = require("path");
+const { Collection } = require("discord.js");
 
 const client = new CommandoClient({
   commandPrefix: "h!",
   owner: ownerID,
 });
+// TODO: Maybe subject to change based on Firebase file structure
+client.hackathons = new Collection();
 
 client.registry
   .registerDefaultTypes()
-  .registerGroups([["first", "Your First Command Group"]])
-  .registerDefaultGroups()
+  .registerTypes([require("./types/date.js")])
+  .registerGroups([
+    ["first", "Your First Command Group"],
+    ["hackathon", "Hackathon Command Group"],
+  ])
+  .registerDefaultGroups({
+    eval: false,
+  })
   .registerDefaultCommands()
   .registerCommandsIn(path.join(__dirname, "commands"));
 
