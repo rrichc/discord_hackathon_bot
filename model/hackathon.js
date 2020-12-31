@@ -39,10 +39,6 @@ class Hackathon {
   equals(hackathon) {
     return this._hackathonName == hackathon.name();
   }
-
-  addTeam() {
-    // ..
-  }
 }
 
 module.exports = Hackathon;

@@ -65,7 +65,7 @@ function createDescription(client) {
   const description = header + rows;
   const descriptionClean = description.replace(/,/g, "");
   // TODO: Remove after debugging
-  console.log(descriptionClean);
+  // console.log(descriptionClean);
   return descriptionClean;
 }
 

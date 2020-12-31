@@ -7,6 +7,7 @@ const Hackathon = require("./hackathon");
 class Hackathons {
   static addNewHackathon(client, hackathonName, startDate, endDate) {
     const newHackathon = new Hackathon(hackathonName, startDate, endDate);
+    // TODO: Use fuzzy string matching to determine if trying to add a similar hackathon?
     if (!client.hackathons.has(hackathonName)) {
       client.hackathons.set(hackathonName, newHackathon);
     } else {

@@ -14,6 +14,7 @@ module.exports = class RemoveHackathonCommand extends (
       description:
         "Removes an existing hackathon from the list of on-going hacks.",
       userPermissions: ["MANAGE_GUILD"],
+      guildOnly: true,
       examples: ["h!removehackathon hackathonName"],
       args: [
         {
@@ -30,13 +31,13 @@ module.exports = class RemoveHackathonCommand extends (
   run(message, { hackathonName }) {
     try {
       Hackathons.removeHackathon(this.client, hackathonName);
+      // TODO: Remove after debugging
       console.log(this.client.hackathons);
       return message.reply(
         `Hackathon Name: ${hackathonName}\nhas been successfully removed!`,
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
-        console.log(this.client.hackathons);
         return message.reply(e.message);
       }
     }
