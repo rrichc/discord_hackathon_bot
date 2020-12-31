@@ -1,8 +1,8 @@
 const { Command } = require("discord.js-commando");
-const DuplicateHackathonException = require("../../model/exceptions/DuplicateHackathonException");
+const DuplicateValueException = require("../../model/exceptions/DuplicateValueException");
 const Hackathons = require("../../model/hackathons");
 
-module.exports = class SayCommand extends (
+module.exports = class AddHackathonCommand extends (
   Command
 ) {
   constructor(client) {
@@ -12,7 +12,7 @@ module.exports = class SayCommand extends (
       group: "hackathon",
       memberName: "addhackathon",
       description: "Adds a new hackathon to the list of on-going hacks.",
-      examples: ["h!addhackathon 01-15-2021 01-16-2021"],
+      examples: ["h!addhackathon hackathonName 01-15-2021 01-16-2021"],
       args: [
         {
           key: "hackathonName",
@@ -41,12 +41,13 @@ module.exports = class SayCommand extends (
         startDate,
         endDate,
       );
+      // TODO: Remove after debugging
       console.log(this.client.hackathons);
       return message.reply(
         `Hackathon Name: ${hackathonName}\nHackathon Start: ${startDate.toString()}\nHackathon End: ${endDate.toString()}\nhas been successfully added!`,
       );
     } catch (e) {
-      if (e instanceof DuplicateHackathonException) {
+      if (e instanceof DuplicateValueException) {
         console.log(this.client.hackathons);
         return message.reply(e.message);
       }
