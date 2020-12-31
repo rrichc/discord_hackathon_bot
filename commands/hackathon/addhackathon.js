@@ -2,7 +2,7 @@ const { Command } = require("discord.js-commando");
 const DuplicateValueException = require("../../model/exceptions/DuplicateValueException");
 const Hackathons = require("../../model/hackathons");
 
-module.exports = class SayCommand extends (
+module.exports = class AddHackathonCommand extends (
   Command
 ) {
   constructor(client) {
@@ -41,6 +41,7 @@ module.exports = class SayCommand extends (
         startDate,
         endDate,
       );
+      // TODO: Remove after debugging
       console.log(this.client.hackathons);
       return message.reply(
         `Hackathon Name: ${hackathonName}\nHackathon Start: ${startDate.toString()}\nHackathon End: ${endDate.toString()}\nhas been successfully added!`,

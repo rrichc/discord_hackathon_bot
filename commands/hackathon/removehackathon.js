@@ -2,7 +2,7 @@ const { Command } = require("discord.js-commando");
 const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
 const Hackathons = require("../../model/hackathons");
 
-module.exports = class SayCommand extends (
+module.exports = class RemoveHackathonCommand extends (
   Command
 ) {
   constructor(client) {
@@ -24,6 +24,8 @@ module.exports = class SayCommand extends (
       ],
     });
   }
+
+  // TODO: Implement the ability for non-admins to remove a hackathon if within a certain time limit of creation (10 mins)?
 
   run(message, { hackathonName }) {
     try {
