@@ -1,6 +1,7 @@
 const { Command } = require("discord.js-commando");
 const Discord = require("discord.js");
-// const Hackathons = require("../../model/hackathons");
+const Hackathons = require("../../model/hackathons");
+const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
 
 module.exports = class DisplayTeamsCommand extends (
   Command
@@ -25,13 +26,14 @@ module.exports = class DisplayTeamsCommand extends (
   }
 
   run(message, { hackathonName }) {
-    const hackathon = this.client.hackathons.get(hackathonName);
-    if (!hackathon) {
-      return message.reply(
-        `No hackathon with the name ${hackathonName} exists! Please double check your spelling.`,
-      );
+    try {
+      const hackathon = Hackathons.getHackathon(this.client, hackathonName);
+      return message.reply(createEmbed(hackathon));
+    } catch (e) {
+      if (e instanceof ValueNotFoundException) {
+        return message.reply(e.message);
+      }
     }
-    return message.reply(createEmbed(hackathon));
   }
 };
 

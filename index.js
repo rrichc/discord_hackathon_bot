@@ -26,7 +26,7 @@ client.registry
 
 client.once("ready", () => {
   console.log(`Logged in as ${client.user.tag}! (${client.user.id})`);
-  client.user.setActivity("with Commando");
+  client.user.setActivity("with h!help");
 });
 
 client.on("error", console.error);

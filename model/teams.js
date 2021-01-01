@@ -19,22 +19,14 @@ class Teams {
   }
 
   static removeTeam(hackathon, teamName, message) {
-    const teamNotFound = new ValueNotFoundException(
-      `No team with the name: ${teamName} was found.`,
-    );
-    const team = hackathon.teams.get(teamName);
-    if (!team) {
-      throw teamNotFound;
-    }
+    const team = this.getTeam(hackathon, teamName);
     const user = message.author;
     const member = message.member;
     if (
       user.id === team.teamLeader.id ||
       member.hasPermission("MANAGE_GUILD")
     ) {
-      if (!hackathon.teams.delete(teamName)) {
-        throw teamNotFound;
-      }
+      hackathon.teams.delete(teamName);
     } else {
       throw new InsufficientPermissionException(
         "You are not the team's leader or server member with sufficient permission.",
@@ -42,7 +34,15 @@ class Teams {
     }
   }
 
-  // Implement add team member method
+  static getTeam(hackathon, teamName) {
+    const team = hackathon.teams.get(teamName);
+    if (!team) {
+      throw new ValueNotFoundException(
+        `No team with the name: ${teamName} was found.`,
+      );
+    }
+    return team;
+  }
 }
 
 module.exports = Teams;

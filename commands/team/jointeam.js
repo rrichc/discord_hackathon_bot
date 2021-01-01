@@ -1,21 +1,22 @@
 const { Command } = require("discord.js-commando");
-const InsufficientPermissionException = require("../../model/exceptions/InsufficientPermissionException");
+const AlreadyTeamMemberException = require("../../model/exceptions/AlreadyTeamMemberException");
 const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
+const TeamFullException = require("../../model/exceptions/TeamFullException");
 const Teams = require("../../model/teams");
 const Hackathons = require("../../model/hackathons");
 
-module.exports = class RemoveTeamCommand extends (
+module.exports = class JoinTeamCommand extends (
   Command
 ) {
   constructor(client) {
     super(client, {
-      name: "removeteam",
-      // aliases: ["rteam"],
+      name: "jointeam",
+      // aliases: ["jteam"],
       group: "team",
-      memberName: "removeteam",
-      description: "Removes an existing team from a hackathon.",
+      memberName: "jointeam",
+      description: "Join an existing team in a hackathon.",
       guildOnly: true,
-      examples: ["h!removeteam hackathonName teamName"],
+      examples: ["h!jointeam hackathonName teamName"],
       args: [
         {
           key: "hackathonName",
@@ -24,7 +25,7 @@ module.exports = class RemoveTeamCommand extends (
         },
         {
           key: "teamName",
-          prompt: "What is the name of the team to be removed?",
+          prompt: "What is the name of the team you want to join?",
           type: "string",
         },
       ],
@@ -34,16 +35,17 @@ module.exports = class RemoveTeamCommand extends (
   run(message, { hackathonName, teamName }) {
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
-      Teams.removeTeam(hackathon, teamName, message);
-      // TODO: Remove after debugging
-      console.log(hackathon);
+      const team = Teams.getTeam(hackathon, teamName);
+      team.joinTeam(message.author);
       return message.reply(
-        `Team Name: ${teamName}\nhas been successfully removed!`,
+        `Team Name: ${teamName}\nhas been successfully joined!`,
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
-      } else if (e instanceof InsufficientPermissionException) {
+      } else if (e instanceof AlreadyTeamMemberException) {
+        return message.reply(e.message);
+      } else if (e instanceof TeamFullException) {
         return message.reply(e.message);
       }
     }

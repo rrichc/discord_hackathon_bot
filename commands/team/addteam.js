@@ -1,6 +1,8 @@
 const { Command } = require("discord.js-commando");
 const DuplicateValueException = require("../../model/exceptions/DuplicateValueException");
+const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
 const Teams = require("../../model/teams");
+const Hackathons = require("../../model/hackathons");
 
 module.exports = class AddTeamCommand extends (
   Command
@@ -34,13 +36,8 @@ module.exports = class AddTeamCommand extends (
   }
 
   run(message, { hackathonName, teamName, capacity }) {
-    if (!this.client.hackathons.has(hackathonName)) {
-      return message.reply(
-        `No hackathon with the name ${hackathonName} exists! Please double check your spelling.`,
-      );
-    }
     try {
-      const hackathon = this.client.hackathons.get(hackathonName);
+      const hackathon = Hackathons.getHackathon(this.client, hackathonName);
       Teams.addNewTeam(hackathon, teamName, message.author, capacity);
       // TODO: Remove after debugging
       console.log(hackathon);
@@ -51,6 +48,8 @@ module.exports = class AddTeamCommand extends (
       );
     } catch (e) {
       if (e instanceof DuplicateValueException) {
+        return message.reply(e.message);
+      } else if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
       }
     }

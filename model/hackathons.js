@@ -20,9 +20,19 @@ class Hackathons {
   static removeHackathon(client, hackathonName) {
     if (!client.hackathons.delete(hackathonName)) {
       throw new ValueNotFoundException(
-        `No hackathon with the name: ${hackathonName} was found.`,
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
       );
     }
+  }
+
+  static getHackathon(client, hackathonName) {
+    const hackathon = client.hackathons.get(hackathonName);
+    if (!hackathon) {
+      throw new ValueNotFoundException(
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
+      );
+    }
+    return hackathon;
   }
 }
 
