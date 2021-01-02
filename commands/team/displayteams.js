@@ -9,7 +9,7 @@ module.exports = class DisplayTeamsCommand extends (
   constructor(client) {
     super(client, {
       name: "displayteams",
-      aliases: ["dispteam", "dispteams", "showteam", "showteams"],
+      aliases: ["dispteams", "showteams"],
       group: "team",
       memberName: "displayteams",
       description: "Displays the list of teams for a hackathon.",
@@ -43,11 +43,7 @@ function createEmbed(hackathon) {
       .setColor("#0099ff")
       .setTitle(hackathon.name)
       // .setURL("https://discord.js.org/")
-      .setAuthor(
-        "BCS Hackathon Bot",
-        "https://i.imgur.com/wSTFkRM.png",
-        "https://discord.js.org",
-      )
+      .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
       .setDescription(createDescription(hackathon))
       // .setThumbnail("https://i.imgur.com/wSTFkRM.png")
       // .addFields(createRows(client))
@@ -57,19 +53,17 @@ function createEmbed(hackathon) {
   );
 }
 
-// TODO: Sort the hackathons by start date before creating the rows
-
 function createDescription(hackathon) {
   const nameOffset = 20;
   const capacityOffset = 8;
   const rows = hackathon.teams.map(createRow);
   const header =
     "`" +
-    "Team Name".padStart(nameOffset) +
+    "Team Name".padEnd(nameOffset) +
     "` `" +
-    "Team Leader".padStart(nameOffset) +
+    "Capacity".padEnd(capacityOffset) +
     "` `" +
-    "Capacity".padStart(capacityOffset) +
+    "Team Leader".padEnd(nameOffset) +
     "`" +
     "\n";
   const description = header + rows;
@@ -82,14 +76,15 @@ function createDescription(hackathon) {
 function createRow(team) {
   const nameOffset = 20;
   const capacityOffset = 8;
+  const userMention = "<@" + team.teamLeader.id + ">";
+  const capacityText = team.teamMembers.keyArray().length + "/" + team.capacity;
   return (
     "`" +
-    team.name.padStart(nameOffset) +
+    team.name.padEnd(nameOffset) +
     "` `" +
-    team.teamLeader.username.padStart(nameOffset) +
-    "` `" +
-    team.capacity.toString().padStart(capacityOffset) +
-    "`" +
+    capacityText.padEnd(capacityOffset) +
+    "` " +
+    userMention +
     "\n"
   );
 }
