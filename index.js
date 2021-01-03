@@ -2,6 +2,7 @@ const { ownerID, token } = require("./config.json");
 const { CommandoClient } = require("discord.js-commando");
 const path = require("path");
 const { Collection } = require("discord.js");
+const Database = require("./database/Database.js");
 
 const client = new CommandoClient({
   commandPrefix: "h!",
@@ -9,6 +10,7 @@ const client = new CommandoClient({
 });
 // TODO: Maybe subject to change based on Firebase file structure
 client.hackathons = new Collection();
+client.database = new Database();
 
 client.registry
   .registerDefaultTypes()

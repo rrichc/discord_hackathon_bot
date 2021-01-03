@@ -36,7 +36,7 @@ module.exports = class RemoveTeamCommand extends (
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
       Teams.removeTeam(hackathon, teamName, message);
       // TODO: Remove after debugging
-      console.log(hackathon);
+      // console.log(hackathon);
       return message.reply(
         `Team Name: ${teamName}\nhas been successfully removed!`,
       );
