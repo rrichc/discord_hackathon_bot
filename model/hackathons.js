@@ -7,6 +7,7 @@ const Hackathon = require("./hackathon");
 class Hackathons {
   static addNewHackathon(client, hackathonName, startDate, endDate) {
     const newHackathon = new Hackathon(hackathonName, startDate, endDate);
+    // TODO: Use fuzzy string matching to determine if trying to add a similar hackathon?
     if (!client.hackathons.has(hackathonName)) {
       client.hackathons.set(hackathonName, newHackathon);
     } else {
@@ -19,9 +20,19 @@ class Hackathons {
   static removeHackathon(client, hackathonName) {
     if (!client.hackathons.delete(hackathonName)) {
       throw new ValueNotFoundException(
-        `No hackathon with the name: ${hackathonName} was found.`,
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
       );
     }
+  }
+
+  static getHackathon(client, hackathonName) {
+    const hackathon = client.hackathons.get(hackathonName);
+    if (!hackathon) {
+      throw new ValueNotFoundException(
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
+      );
+    }
+    return hackathon;
   }
 }
 

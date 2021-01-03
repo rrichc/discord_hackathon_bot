@@ -32,12 +32,7 @@ function createEmbed(client) {
     new Discord.MessageEmbed()
       .setColor("#0099ff")
       .setTitle("Hackathons")
-      .setURL("https://discord.js.org/")
-      .setAuthor(
-        "BCS Hackathon Bot",
-        "https://i.imgur.com/wSTFkRM.png",
-        "https://discord.js.org",
-      )
+      .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
       .setDescription(createDescription(client))
       // .setThumbnail("https://i.imgur.com/wSTFkRM.png")
       // .addFields(createRows(client))
@@ -65,7 +60,7 @@ function createDescription(client) {
   const description = header + rows;
   const descriptionClean = description.replace(/,/g, "");
   // TODO: Remove after debugging
-  console.log(descriptionClean);
+  // console.log(descriptionClean);
   return descriptionClean;
 }
 
