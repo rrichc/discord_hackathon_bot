@@ -2,7 +2,6 @@ const { firebaseConfig, databaseURL, uid } = require("../config.json");
 const admin = require("firebase-admin");
 const { Collection } = require("discord.js");
 const Hackathon = require("../model/hackathon");
-const Hackathons = require("../model/hackathons");
 const Team = require("../model/team");
 const moment = require("moment");
 
@@ -127,7 +126,7 @@ class Database {
             moment(dbHackathonObj.endDate, "MM-DD-YYYY")
           );
           client.hackathons.set(dbHackathonObj.name, newHackathon);
-
+          //
           const teamHackathonRef = teamsRef.child(dbHackathonObj.name);
           teamHackathonRef
             .orderByChild("name")
@@ -145,10 +144,8 @@ class Database {
                 );
                 newHackathon.teams.set(dbTeamObj.name, newTeam);
               });
-              // return true;
             });
-
-          // return true;
+          //
         });
       });
   }

@@ -23,7 +23,36 @@ module.exports = class DisplayHackathonsCommand extends (
   }
 
   run(message) {
-    return message.reply(createEmbed(this.client));
+    const hackathonArray = Array.from(this.client.hackathons.keys());
+    message.reply(createEmbed(this.client));
+    const filter = (response) => {
+      // console.log(response); // add a check for the response.author.id === message.author.id
+      const intResponse = parseInt(response.content);
+      return (
+        response.author.id === message.author.id &&
+        !isNaN(intResponse) &&
+        intResponse >= 1 &&
+        intResponse <= hackathonArray.length
+      );
+    };
+    message.channel
+      .send(
+        "Enter a corresponding number to view the current teams within a specific Hackathon:"
+      )
+      .then(() => {
+        message.channel
+          .awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] })
+          .then((collected) => {
+            // Initiate displaying teams for a specific hackathon here.
+
+            message.channel.send(
+              `${collected.first().author} Filter worked. ${
+                hackathonArray[parseInt(collected.first().content) - 1]
+              }.`
+            );
+          });
+      });
+    return;
   }
 };
 

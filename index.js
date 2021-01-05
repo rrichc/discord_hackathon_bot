@@ -19,12 +19,14 @@ client.registry
   .registerGroups([
     ["hackathon", "Hackathon Command Group"],
     ["team", "Team Command Group"],
-    ["management", "Management Tool Command Group"],
+    ["tools", "Tool Command Group"],
   ])
   .registerDefaultGroups({
     eval: false,
   })
-  .registerDefaultCommands()
+  .registerDefaultCommands({
+    unknownCommand: false,
+  })
   .registerCommandsIn(path.join(__dirname, "commands"));
 
 client.once("ready", () => {
