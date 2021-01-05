@@ -6,14 +6,23 @@ const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
 const Team = require("./team");
 
 class Teams {
-  static addNewTeam(hackathon, teamName, teamLeader, capacity) {
+  static addNewTeam(client, hackathon, teamName, teamLeader, capacity) {
     const newTeam = new Team(teamName, teamLeader, capacity, hackathon.name);
     // TODO: Use fuzzy string matching to determine if trying to add a similar team?
     if (!hackathon.teams.has(teamName)) {
       hackathon.teams.set(teamName, newTeam);
+      // const obj = Object.fromEntries(hackathon.teams);
+      // console.log(obj);
+      // console.log(hackathon.teams.keyArray());
+      // client.database.addTeam(hackathon.teams.keyArray());
+      client.database.addTeam(
+        hackathon.name,
+        hackathon.teams.keyArray(),
+        newTeam
+      );
     } else {
       throw new DuplicateValueException(
-        "A team with this name already exists.",
+        "A team with this name already exists."
       );
     }
   }
@@ -29,7 +38,7 @@ class Teams {
       hackathon.teams.delete(teamName);
     } else {
       throw new InsufficientPermissionException(
-        "You are not the team's leader or server member with sufficient permission.",
+        "You are not the team's leader or server member with sufficient permission."
       );
     }
   }
@@ -38,7 +47,7 @@ class Teams {
     const team = hackathon.teams.get(teamName);
     if (!team) {
       throw new ValueNotFoundException(
-        `No team with the name: ${teamName} was found.`,
+        `No team with the name: ${teamName} was found.`
       );
     }
     return team;

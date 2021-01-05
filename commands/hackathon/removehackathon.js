@@ -32,9 +32,9 @@ module.exports = class RemoveHackathonCommand extends (
     try {
       Hackathons.removeHackathon(this.client, hackathonName);
       // TODO: Remove after debugging
-      console.log(this.client.hackathons);
+      // console.log(this.client.hackathons);
       return message.reply(
-        `Hackathon Name: ${hackathonName}\nhas been successfully removed!`,
+        `Hackathon Name: ${hackathonName}\nhas been successfully removed!`
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {

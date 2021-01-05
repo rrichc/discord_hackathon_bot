@@ -39,12 +39,16 @@ module.exports = class AddHackathonCommand extends (
         this.client,
         hackathonName,
         startDate,
-        endDate,
+        endDate
       );
       // TODO: Remove after debugging
       // console.log(this.client.hackathons);
       return message.reply(
-        `Hackathon Name: ${hackathonName}\nHackathon Start: ${startDate.toString()}\nHackathon End: ${endDate.toString()}\nhas been successfully added!`,
+        `Hackathon Name: ${hackathonName}\nHackathon Start: ${startDate.format(
+          "MMM Do YYYY"
+        )}\nHackathon End: ${endDate.format(
+          "MMM Do YYYY"
+        )}\nhas been successfully added!`
       );
     } catch (e) {
       if (e instanceof DuplicateValueException) {
