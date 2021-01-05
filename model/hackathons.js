@@ -1,5 +1,3 @@
-// const { ArgumentType } = require("discord.js-commando");
-// const moment = require("moment");
 const DuplicateValueException = require("./exceptions/DuplicateValueException");
 const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
 const Hackathon = require("./hackathon");

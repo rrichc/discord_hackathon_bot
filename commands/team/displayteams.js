@@ -2,6 +2,7 @@ const { Command } = require("discord.js-commando");
 const Discord = require("discord.js");
 const Hackathons = require("../../model/hackathons");
 const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
+const TeamsEmbed = require("../../model/TeamsEmbed");
 
 module.exports = class DisplayTeamsCommand extends (
   Command
@@ -27,8 +28,11 @@ module.exports = class DisplayTeamsCommand extends (
 
   run(message, { hackathonName }) {
     try {
-      const hackathon = Hackathons.getHackathon(this.client, hackathonName);
-      return message.reply(createEmbed(hackathon));
+      TeamsEmbed.createTeamsEmbedPromptTeam(
+        this.client,
+        message,
+        hackathonName
+      );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
@@ -38,55 +42,3 @@ module.exports = class DisplayTeamsCommand extends (
     }
   }
 };
-
-function createEmbed(hackathon) {
-  return (
-    new Discord.MessageEmbed()
-      .setColor("#0099ff")
-      .setTitle(hackathon.name)
-      // .setURL("https://discord.js.org/")
-      .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
-      .setDescription(createDescription(hackathon))
-      // .setThumbnail("https://i.imgur.com/wSTFkRM.png")
-      // .addFields(createRows(client))
-      // .setImage("https://i.imgur.com/wSTFkRM.png")
-      .setTimestamp()
-      .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png")
-  );
-}
-
-function createDescription(hackathon) {
-  const nameOffset = 20;
-  const capacityOffset = 8;
-  const rows = hackathon.teams.map(createRow);
-  const header =
-    "`" +
-    "Team Name".padEnd(nameOffset) +
-    "` `" +
-    "Capacity".padEnd(capacityOffset) +
-    "` `" +
-    "Team Leader".padEnd(nameOffset) +
-    "`" +
-    "\n";
-  const description = header + rows;
-  const descriptionClean = description.replace(/,/g, "");
-  // TODO: Remove after debugging
-  // console.log(descriptionClean);
-  return descriptionClean;
-}
-
-function createRow(team) {
-  const nameOffset = 20;
-  const capacityOffset = 8;
-  const userMention = "<@" + team.teamLeader.id + ">";
-  const capacityText = team.teamMembers.keyArray().length + "/" + team.capacity;
-  return (
-    "`" +
-    team.name.padEnd(nameOffset) +
-    "` `" +
-    capacityText.padEnd(capacityOffset) +
-    "` " +
-    userMention +
-    "\n"
-  );
-}
