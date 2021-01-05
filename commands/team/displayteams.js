@@ -28,8 +28,10 @@ module.exports = class DisplayTeamsCommand extends (
 
   run(message, { hackathonName }) {
     try {
-      return message.reply(
-        TeamsEmbed.createTeamsEmbed(this.client, hackathonName)
+      TeamsEmbed.createTeamsEmbedPromptTeam(
+        this.client,
+        message,
+        hackathonName
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {

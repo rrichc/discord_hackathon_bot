@@ -1,27 +1,59 @@
 const Discord = require("discord.js");
 const Hackathons = require("./hackathons");
+const TeamDetailedEmbed = require("./TeamDetailedEmbed");
 
 class TeamsEmbed {
   static createTeamsEmbed(client, hackathonName) {
     const hackathon = Hackathons.getHackathon(client, hackathonName);
     return createEmbed(hackathon);
   }
+
+  static createTeamsEmbedPromptTeam(client, message, hackathonName) {
+    const hackathon = Hackathons.getHackathon(client, hackathonName);
+    const teamArray = Array.from(hackathon.teams.keys());
+    message.reply(createEmbed(hackathon));
+    const filter = (response) => {
+      const intResponse = parseInt(response.content);
+      return (
+        response.author.id === message.author.id &&
+        !isNaN(intResponse) &&
+        intResponse >= 1 &&
+        intResponse <= teamArray.length
+      );
+    };
+    message.channel
+      .send("Enter a corresponding number to view detailed team info:")
+      .then(() => {
+        message.channel
+          .awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] })
+          .then((collected) => {
+            const teamIndex = parseInt(collected.first().content);
+            if (!isNaN(teamIndex)) {
+              message.reply(
+                TeamDetailedEmbed.createTeamDetailedEmbed(
+                  client,
+                  hackathon.name,
+                  teamArray[teamIndex - 1]
+                )
+              );
+            }
+          })
+          .catch((collected) => {
+            return;
+          });
+      });
+    return;
+  }
 }
 
 function createEmbed(hackathon) {
-  return (
-    new Discord.MessageEmbed()
-      .setColor("#0099ff")
-      .setTitle(hackathon.name)
-      // .setURL("https://discord.js.org/")
-      .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
-      .setDescription(createDescription(hackathon))
-      // .setThumbnail("https://i.imgur.com/wSTFkRM.png")
-      // .addFields(createRows(client))
-      // .setImage("https://i.imgur.com/wSTFkRM.png")
-      .setTimestamp()
-      .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png")
-  );
+  return new Discord.MessageEmbed()
+    .setColor("#0099ff")
+    .setTitle(hackathon.name)
+    .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
+    .setDescription(createDescription(hackathon))
+    .setTimestamp()
+    .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png");
 }
 
 function createDescription(hackathon) {
