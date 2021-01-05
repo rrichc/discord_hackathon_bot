@@ -1,9 +1,8 @@
-const { Command } = require("discord.js-commando");
 const Discord = require("discord.js");
-const Hackathons = require("../../model/hackathons");
+const Hackathons = require("./hackathons");
 
-class TeamEmbed {
-  static teamsEmbed(client, hackathonName) {
+class TeamsEmbed {
+  static createTeamsEmbed(client, hackathonName) {
     const hackathon = Hackathons.getHackathon(client, hackathonName);
     return createEmbed(hackathon);
   }
@@ -61,4 +60,4 @@ function createRow(team) {
   );
 }
 
-module.exports = TeamEmbed;
+module.exports = TeamsEmbed;

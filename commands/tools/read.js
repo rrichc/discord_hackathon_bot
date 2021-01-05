@@ -6,7 +6,7 @@ module.exports = class ReadCommand extends (
   constructor(client) {
     super(client, {
       name: "read",
-      group: "management",
+      group: "tools",
       memberName: "read",
       description: "Rebuilds the local memory from Firebase.",
       examples: ["h!read"],
