@@ -10,7 +10,8 @@ const client = new CommandoClient({
 });
 // TODO: Maybe subject to change based on Firebase file structure
 client.hackathons = new Collection();
-client.database = new Database();
+client.database = new Database(client);
+client.database.read();
 
 client.registry
   .registerDefaultTypes()
@@ -18,6 +19,7 @@ client.registry
   .registerGroups([
     ["hackathon", "Hackathon Command Group"],
     ["team", "Team Command Group"],
+    ["management", "Management Tool Command Group"],
   ])
   .registerDefaultGroups({
     eval: false,

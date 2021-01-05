@@ -1,5 +1,5 @@
 // const { ArgumentType } = require("discord.js-commando");
-const moment = require("moment");
+// const moment = require("moment");
 const DuplicateValueException = require("./exceptions/DuplicateValueException");
 const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
 const Hackathon = require("./hackathon");
@@ -10,9 +10,10 @@ class Hackathons {
     // TODO: Use fuzzy string matching to determine if trying to add a similar hackathon?
     if (!client.hackathons.has(hackathonName)) {
       client.hackathons.set(hackathonName, newHackathon);
+      client.database.addNewHackathon(hackathonName, startDate, endDate);
     } else {
       throw new DuplicateValueException(
-        "A hackathon with this name already exists.",
+        "A hackathon with this name already exists."
       );
     }
   }
@@ -20,16 +21,17 @@ class Hackathons {
   static removeHackathon(client, hackathonName) {
     if (!client.hackathons.delete(hackathonName)) {
       throw new ValueNotFoundException(
-        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`
       );
     }
+    client.database.removeHackathon(hackathonName);
   }
 
   static getHackathon(client, hackathonName) {
     const hackathon = client.hackathons.get(hackathonName);
     if (!hackathon) {
       throw new ValueNotFoundException(
-        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`,
+        `No hackathon with the name: ${hackathonName} was found. Please double check your spelling.`
       );
     }
     return hackathon;

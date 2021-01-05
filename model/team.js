@@ -54,38 +54,59 @@ class Team {
   }
 
   // Consider a check to see if part of other teams already
-  joinTeam(user) {
+  joinTeam(client, user) {
     if (this.teamMembers.has(user.id)) {
       throw new AlreadyTeamMemberException(
-        "You are already a member of this team.",
+        "You are already a member of this team."
       );
     }
     if (this.teamMembers.keyArray().length >= this.capacity) {
       throw new TeamFullException("The team is full!");
     }
     this.teamMembers.set(user.id, user.username);
-    // TODO: Remove when done debugging
-    console.log(this._teamMembers);
+    client.database.updateTeamMembers(
+      this.hackathonName,
+      this.name,
+      this.teamMembers
+    );
   }
 
-  // Implement leave as team member method
+  // Leave as team member method
   // Check if already a member, and if they are the team leader
   // Leaving as team leader should designate the next person in line as team leader
   // If they are the only person left in the team, team is deleted
-  leaveTeam(user, hackathon) {
+  leaveTeam(client, user, hackathon) {
     if (!this.teamMembers.has(user.id)) {
       throw new ValueNotFoundException("You are not a part of this team.");
     }
     // check if they are the only one left in the team, delete team, else continue below
     if (this.teamMembers.keyArray().length <= 1) {
       hackathon.teams.delete(this.name);
+      client.database.removeTeam(
+        this.hackathonName,
+        this.name,
+        hackathon.teams.keyArray()
+      );
       // else remove as a teammember, then check if also a team leader
       // if team leader than remove as team leader and designate the next in line
     } else {
       this.teamMembers.delete(user.id);
+      client.database.updateTeamMembers(
+        this.hackathonName,
+        this.name,
+        this.teamMembers
+      );
       if (user.id === this.teamLeader.id) {
-        const newTeamLeader = this.teamMembers.first(1);
-        this.teamLeader({ id: newTeamLeader[0], username: newTeamLeader[1] });
+        const newTeamLeaderJSON = {
+          id: this.teamMembers.firstKey(),
+          username: this.teamMembers.get(this.teamMembers.firstKey()),
+        };
+        this.teamLeader = newTeamLeaderJSON;
+        client.database.updateTeamLeader(
+          this.hackathonName,
+          this.name,
+          newTeamLeaderJSON
+        );
       }
     }
   }

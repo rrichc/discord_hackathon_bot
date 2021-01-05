@@ -38,19 +38,27 @@ module.exports = class AddTeamCommand extends (
   run(message, { hackathonName, teamName, capacity }) {
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
-      Teams.addNewTeam(hackathon, teamName, message.author, capacity);
+      Teams.addNewTeam(
+        this.client,
+        hackathon,
+        teamName,
+        message.author,
+        capacity
+      );
       // TODO: Remove after debugging
-      console.log(hackathon);
+      // console.log(hackathon);
       return message.reply(
         `Team Name: ${teamName}\nTeam Leader: ${
           message.author.username
-        }\nTeam Capacity: ${capacity.toString()}\nhas been successfully added!`,
+        }\nTeam Capacity: ${capacity.toString()}\nhas been successfully added!`
       );
     } catch (e) {
       if (e instanceof DuplicateValueException) {
         return message.reply(e.message);
       } else if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }

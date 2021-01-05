@@ -34,17 +34,19 @@ module.exports = class RemoveTeamCommand extends (
   run(message, { hackathonName, teamName }) {
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
-      Teams.removeTeam(hackathon, teamName, message);
+      Teams.removeTeam(this.client, hackathon, teamName, message);
       // TODO: Remove after debugging
       // console.log(hackathon);
       return message.reply(
-        `Team Name: ${teamName}\nhas been successfully removed!`,
+        `Team Name: ${teamName}\nhas been successfully removed!`
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
       } else if (e instanceof InsufficientPermissionException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }
