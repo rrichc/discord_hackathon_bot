@@ -57,6 +57,8 @@ module.exports = class AddTeamCommand extends (
         return message.reply(e.message);
       } else if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }

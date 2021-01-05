@@ -18,6 +18,7 @@ client.registry
   .registerGroups([
     ["hackathon", "Hackathon Command Group"],
     ["team", "Team Command Group"],
+    ["management", "Management Tool Command Group"],
   ])
   .registerDefaultGroups({
     eval: false,

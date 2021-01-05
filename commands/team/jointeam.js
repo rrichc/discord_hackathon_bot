@@ -47,6 +47,8 @@ module.exports = class JoinTeamCommand extends (
         return message.reply(e.message);
       } else if (e instanceof TeamFullException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }

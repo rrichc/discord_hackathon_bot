@@ -45,6 +45,8 @@ module.exports = class RemoveTeamCommand extends (
         return message.reply(e.message);
       } else if (e instanceof InsufficientPermissionException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }

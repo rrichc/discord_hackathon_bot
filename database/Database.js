@@ -25,6 +25,10 @@ class Database {
     return this._database;
   }
 
+  get client() {
+    return this._client;
+  }
+
   addNewHackathon(hackathonName, startDate, endDate) {
     const newHackathonRef = this.hackathonsRef.push();
     newHackathonRef.set({
@@ -104,6 +108,17 @@ class Database {
       .once("child_added", function (snapshot) {
         snapshot.ref.update({
           teamLeader: newTeamLeader,
+        });
+      });
+  }
+
+  read() {
+    this.hackathonsRef
+      .orderByChild("name")
+      .once("value", function (querySnapshot) {
+        querySnapshot.array.forEach(function (hackathonSnapshot) {
+          console.log(hackathonSnapshot.key);
+          return true;
         });
       });
   }

@@ -45,6 +45,8 @@ module.exports = class DisplayTeamDetailsCommand extends (
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }
@@ -61,7 +63,7 @@ function createEmbed(hackathon, team) {
         { name: "Team Leader", value: "<@" + team.teamLeader.id + ">" },
         // { name: "\u200B", value: "\u200B" },
         { name: "Team Members", value: createTeamList(team), inline: true },
-        { name: "Notes", value: "Lorem ipsum", inline: true },
+        { name: "Notes", value: "Lorem ipsum", inline: true }
       )
       .setTimestamp()
       .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png")

@@ -97,12 +97,11 @@ class Team {
         this.teamMembers
       );
       if (user.id === this.teamLeader.id) {
-        const newTeamLeaderArray = this.teamMembers.first(1);
         const newTeamLeaderJSON = {
-          id: newTeamLeaderArray[0],
-          username: newTeamLeaderArray[1],
+          id: this.teamMembers.firstKey(),
+          username: this.teamMembers.get(this.teamMembers.firstKey()),
         };
-        this.teamLeader(newTeamLeaderJSON);
+        this.teamLeader = newTeamLeaderJSON;
         client.database.updateTeamLeader(
           this.hackathonName,
           this.name,

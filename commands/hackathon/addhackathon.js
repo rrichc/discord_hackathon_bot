@@ -53,6 +53,8 @@ module.exports = class AddHackathonCommand extends (
     } catch (e) {
       if (e instanceof DuplicateValueException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }

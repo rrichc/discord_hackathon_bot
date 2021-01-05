@@ -42,6 +42,8 @@ module.exports = class LeaveTeamCommand extends (
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
         return message.reply(e.message);
+      } else {
+        throw e;
       }
     }
   }
