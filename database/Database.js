@@ -44,16 +44,18 @@ class Database {
   }
 
   addTeam(hackathonName, newTeamList, newTeam) {
+    const teamHackathonRef = this.teamsRef.child(hackathonName);
     // Updates the list of team names under the according hackathon
     this.updateHackathonTeamList(hackathonName, newTeamList);
     // Adds the team to the team database
-    const newTeamRef = this.teamsRef.push();
+    const teamMembersJSONObj = Object.fromEntries(newTeam.teamMembers);
+    const newTeamRef = teamHackathonRef.push();
     newTeamRef.set({
       name: newTeam.name,
       teamLeader: newTeam.teamLeader,
       capacity: newTeam.capacity,
       hackathonName: hackathonName,
-      teamMembers: newTeam.teamMembers,
+      teamMembers: teamMembersJSONObj,
     });
   }
 
@@ -61,9 +63,10 @@ class Database {
     // Updates the list of team names under the according hackathon
     this.updateHackathonTeamList(hackathonName, newTeamList);
     // Removes the team to the team database
-    this.teamsRef
-      .orderByChild("hackathonName")
-      .equalTo(hackathonName)
+    const teamHackathonRef = this.teamsRef.child(hackathonName);
+    teamHackathonRef
+      .orderByChild("name")
+      .equalTo(teamName)
       .once("child_added", function (snapshot) {
         snapshot.ref.remove();
       });
@@ -76,6 +79,31 @@ class Database {
       .once("child_added", function (snapshot) {
         snapshot.ref.update({
           teams: newTeamList,
+        });
+      });
+  }
+
+  updateTeamMembers(hackathonName, teamName, teamMembers) {
+    const teamMembersJSONObj = Object.fromEntries(teamMembers);
+    const teamHackathonRef = this.teamsRef.child(hackathonName);
+    teamHackathonRef
+      .orderByChild("name")
+      .equalTo(teamName)
+      .once("child_added", function (snapshot) {
+        snapshot.ref.update({
+          teamMembers: teamMembersJSONObj,
+        });
+      });
+  }
+
+  updateTeamLeader(hackathonName, teamName, newTeamLeader) {
+    const teamHackathonRef = this.teamsRef.child(hackathonName);
+    teamHackathonRef
+      .orderByChild("name")
+      .equalTo(teamName)
+      .once("child_added", function (snapshot) {
+        snapshot.ref.update({
+          teamLeader: newTeamLeader,
         });
       });
   }

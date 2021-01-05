@@ -36,9 +36,9 @@ module.exports = class JoinTeamCommand extends (
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
       const team = Teams.getTeam(hackathon, teamName);
-      team.joinTeam(message.author);
+      team.joinTeam(this.client, message.author);
       return message.reply(
-        `Team Name: ${teamName}\nhas been successfully joined!`,
+        `Team Name: ${teamName}\nhas been successfully joined!`
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {

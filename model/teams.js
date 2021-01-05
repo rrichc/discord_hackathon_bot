@@ -11,10 +11,6 @@ class Teams {
     // TODO: Use fuzzy string matching to determine if trying to add a similar team?
     if (!hackathon.teams.has(teamName)) {
       hackathon.teams.set(teamName, newTeam);
-      // const obj = Object.fromEntries(hackathon.teams);
-      // console.log(obj);
-      // console.log(hackathon.teams.keyArray());
-      // client.database.addTeam(hackathon.teams.keyArray());
       client.database.addTeam(
         hackathon.name,
         hackathon.teams.keyArray(),
@@ -27,7 +23,7 @@ class Teams {
     }
   }
 
-  static removeTeam(hackathon, teamName, message) {
+  static removeTeam(client, hackathon, teamName, message) {
     const team = this.getTeam(hackathon, teamName);
     const user = message.author;
     const member = message.member;
@@ -36,6 +32,11 @@ class Teams {
       member.hasPermission("MANAGE_GUILD")
     ) {
       hackathon.teams.delete(teamName);
+      client.database.removeTeam(
+        hackathon.name,
+        teamName,
+        hackathon.teams.keyArray()
+      );
     } else {
       throw new InsufficientPermissionException(
         "You are not the team's leader or server member with sufficient permission."

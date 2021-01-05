@@ -35,9 +35,9 @@ module.exports = class LeaveTeamCommand extends (
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
       const team = Teams.getTeam(hackathon, teamName);
-      team.leaveTeam(message.author, hackathon);
+      team.leaveTeam(this.client, message.author, hackathon);
       return message.reply(
-        `Team Name: ${teamName}\nhas been successfully left!`,
+        `Team Name: ${teamName}\nhas been successfully left!`
       );
     } catch (e) {
       if (e instanceof ValueNotFoundException) {
