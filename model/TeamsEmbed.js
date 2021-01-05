@@ -50,7 +50,10 @@ function createEmbed(hackathon) {
   return new Discord.MessageEmbed()
     .setColor("#0099ff")
     .setTitle(hackathon.name)
-    .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
+    .setAuthor(
+      "BCS Hackathon Organizer ALPHA",
+      "https://i.imgur.com/wSTFkRM.png"
+    )
     .setDescription(createDescription(hackathon))
     .setTimestamp()
     .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png");
@@ -59,9 +62,12 @@ function createEmbed(hackathon) {
 function createDescription(hackathon) {
   const nameOffset = 20;
   const capacityOffset = 8;
-  const rows = hackathon.teams.map(createRow);
+  const teamsArray = hackathon.teams.array();
+  const rows = teamsArray.map(createRow);
   const header =
     "`" +
+    "#".padStart(2) +
+    "` `" +
     "Team Name".padEnd(nameOffset) +
     "` `" +
     "Capacity".padEnd(capacityOffset) +
@@ -76,13 +82,16 @@ function createDescription(hackathon) {
   return descriptionClean;
 }
 
-function createRow(team) {
+function createRow(team, index) {
+  const num = index + 1;
   const nameOffset = 20;
   const capacityOffset = 8;
   const userMention = "<@" + team.teamLeader.id + ">";
   const capacityText = team.teamMembers.keyArray().length + "/" + team.capacity;
   return (
     "`" +
+    num.toString().padStart(2) +
+    "` `" +
     team.name.padEnd(nameOffset) +
     "` `" +
     capacityText.padEnd(capacityOffset) +

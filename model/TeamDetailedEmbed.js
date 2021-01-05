@@ -15,13 +15,20 @@ function createEmbed(hackathon, team) {
     new Discord.MessageEmbed()
       .setColor("#0099ff")
       .setTitle(team.name + " | " + hackathon.name)
-      .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
+      .setAuthor(
+        "BCS Hackathon Organizer ALPHA",
+        "https://i.imgur.com/wSTFkRM.png"
+      )
       // .setDescription("----------------------")
       .addFields(
         { name: "Team Leader", value: "<@" + team.teamLeader.id + ">" },
         // { name: "\u200B", value: "\u200B" },
         { name: "Team Members", value: createTeamList(team), inline: true },
-        { name: "Notes", value: "To be implemented later.", inline: true }
+        {
+          name: "Notes",
+          value: "Notes section to be implemented later.",
+          inline: true,
+        }
       )
       .setTimestamp()
       .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png")

@@ -47,7 +47,10 @@ function createEmbed(client) {
   return new Discord.MessageEmbed()
     .setColor("#0099ff")
     .setTitle("Hackathons")
-    .setAuthor("BCS Hackathon Bot", "https://i.imgur.com/wSTFkRM.png")
+    .setAuthor(
+      "BCS Hackathon Organizer ALPHA",
+      "https://i.imgur.com/wSTFkRM.png"
+    )
     .setDescription(createDescription(client))
     .setTimestamp()
     .setFooter("Page #X", "https://i.imgur.com/wSTFkRM.png");
@@ -58,9 +61,12 @@ function createEmbed(client) {
 function createDescription(client) {
   const nameOffset = 20;
   const dateOffset = 15;
-  const rows = client.hackathons.map(createRow);
+  const hackathonsArray = client.hackathons.array();
+  const rows = hackathonsArray.map(createRow);
   const header =
     "`" +
+    "#".padStart(2) +
+    "` `" +
     "Hackathon".padStart(nameOffset) +
     "` `" +
     "Start Date".padStart(dateOffset) +
@@ -75,11 +81,14 @@ function createDescription(client) {
   return descriptionClean;
 }
 
-function createRow(hackathon) {
+function createRow(hackathon, index) {
+  const num = index + 1;
   const nameOffset = 20;
   const dateOffset = 15;
   return (
     "`" +
+    num.toString().padStart(2) +
+    "` `" +
     hackathon.name.padStart(nameOffset) +
     "` `" +
     hackathon.startDate.format("MMM Do YYYY").padStart(dateOffset) +
