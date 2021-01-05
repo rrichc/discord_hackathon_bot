@@ -1,9 +1,10 @@
 const { firebaseConfig, databaseURL, uid } = require("../config.json");
 const admin = require("firebase-admin");
-// const moment = require("moment");
-// const DuplicateValueException = require("./exceptions/DuplicateValueException");
-// const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
-// const Hackathon = require("./hackathon");
+const { Collection } = require("discord.js");
+const Hackathon = require("../model/hackathon");
+const Hackathons = require("../model/hackathons");
+const Team = require("../model/team");
+const moment = require("moment");
 
 class Database {
   constructor(client) {
@@ -113,12 +114,41 @@ class Database {
   }
 
   read() {
+    const client = this.client;
+    const teamsRef = this.teamsRef;
     this.hackathonsRef
       .orderByChild("name")
-      .once("value", function (querySnapshot) {
-        querySnapshot.array.forEach(function (hackathonSnapshot) {
-          console.log(hackathonSnapshot.key);
-          return true;
+      .on("value", function (hackathonQuerySnapshot) {
+        hackathonQuerySnapshot.forEach(function (hackathonSnapshot) {
+          const dbHackathonObj = hackathonSnapshot.val();
+          const newHackathon = new Hackathon(
+            dbHackathonObj.name,
+            moment(dbHackathonObj.startDate, "MM-DD-YYYY"),
+            moment(dbHackathonObj.endDate, "MM-DD-YYYY")
+          );
+          client.hackathons.set(dbHackathonObj.name, newHackathon);
+
+          const teamHackathonRef = teamsRef.child(dbHackathonObj.name);
+          teamHackathonRef
+            .orderByChild("name")
+            .on("value", function (teamQuerySnapshot) {
+              teamQuerySnapshot.forEach(function (teamSnapshot) {
+                const dbTeamObj = teamSnapshot.val();
+                const newTeam = new Team(
+                  dbTeamObj.name,
+                  dbTeamObj.teamLeader,
+                  dbTeamObj.capacity,
+                  dbTeamObj.hackathonName
+                );
+                newTeam.teamMembers = new Collection(
+                  Object.entries(dbTeamObj.teamMembers)
+                );
+                newHackathon.teams.set(dbTeamObj.name, newTeam);
+              });
+              // return true;
+            });
+
+          // return true;
         });
       });
   }
