@@ -1,4 +1,4 @@
-const { firebaseConfig, databaseURL, uid } = require("../config.json");
+require("dotenv-flow").config({ silent: true });
 const admin = require("firebase-admin");
 const { Collection } = require("discord.js");
 const Hackathon = require("../model/hackathon");
@@ -9,10 +9,21 @@ class Database {
   constructor(client) {
     this._client = client;
     admin.initializeApp({
-      credential: admin.credential.cert(firebaseConfig),
-      databaseURL: databaseURL,
+      credential: admin.credential.cert({
+        type: process.env.TYPE,
+        project_id: process.env.PROJECT_ID,
+        private_key_id: process.env.PRIVATE,
+        private_key: process.env.PRIVATE_KEY,
+        client_email: process.env.CLIENT_EMAIL,
+        client_id: process.env.CLIENT_ID,
+        auth_uri: process.env.AUTH_URI,
+        token_uri: process.env.TOKEN_URI,
+        auth_provider_x509_cert_url: process.env.AUTH_PROVIDER_X509_CERT_URL,
+        client_x509_cert_url: process.env.CLIENT_X509_CERT_URL,
+      }),
+      databaseURL: process.env.DATABASEURL,
       databaseAuthVariableOverride: {
-        uid: uid,
+        uid: process.env.UID,
       },
     });
     this._database = admin.database();
