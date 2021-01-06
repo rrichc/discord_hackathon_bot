@@ -81,6 +81,7 @@ class Team {
     }
     // check if they are the only one left in the team, delete team, else continue below
     if (this.teamMembers.keyArray().length <= 1) {
+      // Make change directly to client
       hackathon.teams.delete(this.name);
       client.database.removeTeam(
         this.hackathonName,

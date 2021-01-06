@@ -37,7 +37,6 @@ module.exports = class AddHackathonCommand extends (
   }
 
   run(message, { hackathonName, startDate, endDate }) {
-    console.log(moment().toString());
     if (!startDate.isSameOrAfter(moment().startOf("date"))) {
       return message.reply("Please enter a start date that is today or later.");
     }
