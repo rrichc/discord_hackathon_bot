@@ -14,12 +14,13 @@ class TeamsEmbed {
     message.reply(createEmbed(hackathon));
     const filter = (response) => {
       const intResponse = parseInt(response.content);
-      return (
-        response.author.id === message.author.id &&
-        !isNaN(intResponse) &&
-        intResponse >= 1 &&
-        intResponse <= teamArray.length
-      );
+      // return (
+      //   response.author.id === message.author.id &&
+      //   !isNaN(intResponse) &&
+      //   intResponse >= 1 &&
+      //   intResponse <= teamArray.length
+      // );
+      return true;
     };
     message.channel
       .send("Enter a corresponding number to view detailed team info:")
