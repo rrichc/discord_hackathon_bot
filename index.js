@@ -4,6 +4,20 @@ const path = require("path");
 const { Collection } = require("discord.js");
 const Database = require("./database/Database.js");
 
+// ================= EXPRESS SERVER FOR REPL ===================
+
+// const express = require("express");
+// const app = express();
+// const port = 3000;
+
+// app.get("/", (req, res) => res.send("Hello World!"));
+
+// app.listen(port, () =>
+//   console.log(`Example app listening at http://localhost:${port}`)
+// );
+
+// ================= START BOT CODE ===================
+
 const client = new CommandoClient({
   commandPrefix: "h!",
   owner: process.env.OWNERID,
