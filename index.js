@@ -6,15 +6,17 @@ const Database = require("./database/Database.js");
 
 // ================= EXPRESS SERVER FOR REPL ===================
 
-// const express = require("express");
-// const app = express();
-// const port = 3000;
+const express = require("express");
+const app = express();
+const port = 3000;
 
-// app.get("/", (req, res) => res.send("Hello World!"));
+app.get("/", (req, res) =>
+  res.send("This is the repl webserver keeping my discord bot alive!")
+);
 
-// app.listen(port, () =>
-//   console.log(`Example app listening at http://localhost:${port}`)
-// );
+app.listen(port, () =>
+  console.log(`Dummy webserver listening at http://localhost:${port}`)
+);
 
 // ================= START BOT CODE ===================
 

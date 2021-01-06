@@ -4,6 +4,7 @@ const DuplicateValueException = require("./exceptions/DuplicateValueException");
 const InsufficientPermissionException = require("./exceptions/InsufficientPermissionException");
 const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
 const Team = require("./team");
+const Hackathons = require("./Hackathons");
 
 class Teams {
   static addNewTeam(client, hackathon, teamName, teamLeader, capacity) {
@@ -31,6 +32,7 @@ class Teams {
       user.id === team.teamLeader.id ||
       member.hasPermission("MANAGE_GUILD")
     ) {
+      // Make change directly to client
       hackathon.teams.delete(teamName);
       client.database.removeTeam(
         hackathon.name,
