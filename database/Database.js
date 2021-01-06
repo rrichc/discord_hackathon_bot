@@ -1,8 +1,8 @@
 require("dotenv-flow").config({ silent: true });
 const admin = require("firebase-admin");
 const { Collection } = require("discord.js");
-const Hackathon = require("../model/hackathon");
-const Team = require("../model/team");
+const Hackathon = require("../model/Hackathon");
+const Team = require("../model/Team");
 const moment = require("moment");
 
 class Database {

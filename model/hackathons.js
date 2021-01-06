@@ -1,6 +1,6 @@
 const DuplicateValueException = require("./exceptions/DuplicateValueException");
 const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
-const Hackathon = require("./hackathon");
+const Hackathon = require("./Hackathon");
 
 class Hackathons {
   static addNewHackathon(client, hackathonName, startDate, endDate) {

@@ -1,10 +1,8 @@
-// const { ArgumentType } = require("discord.js-commando");
 const moment = require("moment");
 const DuplicateValueException = require("./exceptions/DuplicateValueException");
 const InsufficientPermissionException = require("./exceptions/InsufficientPermissionException");
 const ValueNotFoundException = require("./exceptions/ValueNotFoundException");
-const Team = require("./team");
-const Hackathons = require("./Hackathons");
+const Team = require("./Team");
 
 class Teams {
   static addNewTeam(client, hackathon, teamName, teamLeader, capacity) {

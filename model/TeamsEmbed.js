@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const Hackathons = require("./hackathons");
+const Hackathons = require("./Hackathons");
 const TeamDetailedEmbed = require("./TeamDetailedEmbed");
 
 class TeamsEmbed {
