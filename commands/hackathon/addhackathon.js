@@ -1,6 +1,7 @@
 const { Command } = require("discord.js-commando");
 const DuplicateValueException = require("../../model/exceptions/DuplicateValueException");
 const Hackathons = require("../../model/hackathons");
+const moment = require("moment-timezone");
 
 module.exports = class AddHackathonCommand extends (
   Command
@@ -21,12 +22,14 @@ module.exports = class AddHackathonCommand extends (
         },
         {
           key: "startDate",
-          prompt: "When does the hackathon start? Enter MM-DD-YYYY",
+          prompt:
+            "When does the hackathon start? Enter MM-DD-YYYY (Dates in the PST Time Zone).",
           type: "date",
         },
         {
           key: "endDate",
-          prompt: "When does the hackathon end? Enter MM-DD-YYYY",
+          prompt:
+            "When does the hackathon end? Enter MM-DD-YYYY (Dates in the PST Time Zone).",
           type: "date",
         },
       ],
@@ -34,6 +37,15 @@ module.exports = class AddHackathonCommand extends (
   }
 
   run(message, { hackathonName, startDate, endDate }) {
+    console.log(moment().toString());
+    if (!startDate.isSameOrAfter(moment().startOf("date"))) {
+      return message.reply("Please enter a start date that is today or later.");
+    }
+    if (!endDate.isSameOrAfter(startDate)) {
+      return message.reply(
+        "Please enter an end date that is on the same day or later than the start date."
+      );
+    }
     try {
       Hackathons.addNewHackathon(
         this.client,

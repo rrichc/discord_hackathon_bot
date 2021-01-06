@@ -10,13 +10,14 @@ class HackathonsEmbed {
     const hackathonArray = Array.from(client.hackathons.keys());
     message.reply(createEmbed(client));
     const filter = (response) => {
-      const intResponse = parseInt(response.content);
-      return (
-        response.author.id === message.author.id &&
-        !isNaN(intResponse) &&
-        intResponse >= 1 &&
-        intResponse <= hackathonArray.length
-      );
+      // const intResponse = parseInt(response.content);
+      // return (
+      //   response.author.id === message.author.id &&
+      //   !isNaN(intResponse) &&
+      //   intResponse >= 1 &&
+      //   intResponse <= hackathonArray.length
+      // );
+      return true;
     };
     message.channel
       .send(

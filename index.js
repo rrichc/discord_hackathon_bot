@@ -8,7 +8,6 @@ const client = new CommandoClient({
   commandPrefix: "h!",
   owner: ownerID,
 });
-// TODO: Maybe subject to change based on Firebase file structure
 client.hackathons = new Collection();
 client.database = new Database(client);
 client.database.read();

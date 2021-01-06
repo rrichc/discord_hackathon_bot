@@ -1,9 +1,10 @@
 const { ArgumentType } = require("discord.js-commando");
-const moment = require("moment");
+const moment = require("moment-timezone");
 
 class DateArgumentType extends ArgumentType {
   constructor(client) {
     super(client, "date");
+    moment.tz.setDefault("America/Vancouver");
   }
 
   validate(val) {

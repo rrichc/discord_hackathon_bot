@@ -38,6 +38,9 @@ module.exports = class AddTeamCommand extends (
   run(message, { hackathonName, teamName, capacity }) {
     try {
       const hackathon = Hackathons.getHackathon(this.client, hackathonName);
+      if (parseInt(capacity) < 1) {
+        return message.reply("Please enter a team capacity greater than 1.");
+      }
       Teams.addNewTeam(
         this.client,
         hackathon,
