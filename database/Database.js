@@ -128,7 +128,7 @@ class Database {
     const teamsRef = this.teamsRef;
     this.hackathonsRef
       .orderByChild("name")
-      .on("value", function (hackathonQuerySnapshot) {
+      .once("value", function (hackathonQuerySnapshot) {
         hackathonQuerySnapshot.forEach(function (hackathonSnapshot) {
           const dbHackathonObj = hackathonSnapshot.val();
           const newHackathon = new Hackathon(
@@ -141,7 +141,7 @@ class Database {
           const teamHackathonRef = teamsRef.child(dbHackathonObj.name);
           teamHackathonRef
             .orderByChild("name")
-            .on("value", function (teamQuerySnapshot) {
+            .once("value", function (teamQuerySnapshot) {
               teamQuerySnapshot.forEach(function (teamSnapshot) {
                 const dbTeamObj = teamSnapshot.val();
                 const newTeam = new Team(
