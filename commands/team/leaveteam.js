@@ -1,7 +1,7 @@
 const { Command } = require("discord.js-commando");
 const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
-const Teams = require("../../model/teams");
-const Hackathons = require("../../model/hackathons");
+const Teams = require("../../model/Teams");
+const Hackathons = require("../../model/Hackathons");
 
 module.exports = class LeaveTeamCommand extends (
   Command

@@ -1,7 +1,7 @@
 const { Command } = require("discord.js-commando");
 const Discord = require("discord.js");
 const Hackathons = require("../../model/hackathons");
-const Teams = require("../../model/teams");
+const Teams = require("../../model/Teams");
 const ValueNotFoundException = require("../../model/exceptions/ValueNotFoundException");
 const TeamDetailedEmbed = require("../../model/TeamDetailedEmbed");
 
