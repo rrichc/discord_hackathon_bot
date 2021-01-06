@@ -1,6 +1,6 @@
 const { Command } = require("discord.js-commando");
 const DuplicateValueException = require("../../model/exceptions/DuplicateValueException");
-const Hackathons = require("../../model/hackathons");
+const Hackathons = require("../../model/Hackathons");
 const moment = require("moment-timezone");
 
 module.exports = class AddHackathonCommand extends (
