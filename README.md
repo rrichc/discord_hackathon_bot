@@ -6,6 +6,8 @@
 
 The bot's primary purpose is to allow hackathon participants self organize into teams for each hackathon. Users can add upcoming hackathons, and create teams under each one. Other users can join or leave teams as necessary, and easily contact other team members through private/group messages.
 
+The bot is currently deployed onto the official UBC BCS Discord server.
+
 ## Why 
 This project was inspired by a need that arose on the UBC BCS Discord server. With classes being online, the Bachelor of Computer Science program's tight-knit community moved to Discord as our primary form of communication. There were many instances of people sending messages in the general chat looking for teammates, and losing track of who was still looking for a team vs those who had already joined a team.
 
